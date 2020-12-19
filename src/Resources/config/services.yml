@@ -7,3 +7,10 @@ services:
     Kematjaya\Export\Manager\ManagerInterface:
         class: Kematjaya\Export\Manager\ExportManager
         public: true
+        
+    Kematjaya\Export\Normalizer\FileNormalizerInterface:
+        class: Kematjaya\Export\Normalizer\FileNormalizer
+        
+    kematjaya.file_normalizer:
+        alias: Kematjaya\Export\Normalizer\FileNormalizerInterface
+        public: true
