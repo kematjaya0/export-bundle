@@ -14,3 +14,6 @@ services:
     kematjaya.file_normalizer:
         alias: Kematjaya\Export\Normalizer\FileNormalizerInterface
         public: true
+        
+    Kematjaya\ExportBundle\Twig\ImageEncodeExtension:
+        tags: ['twig.extension']
