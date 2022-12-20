@@ -2,6 +2,7 @@
     "name": "kematjaya/export-bundle",
     "type": "library",
     "license": "MIT",
+    "description": "help to export various format output",
     "authors": [
         {
             "name": "Nur Hidayatullah",

@@ -1,9 +1,5 @@
 <?php
 
-/**
- * This file is part of the export-bundle.
- */
-
 namespace Kematjaya\ExportBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
@@ -38,15 +34,24 @@ class ImageEncodeExtension extends AbstractExtension
         $this->normalizer = $normalizer;
     }
     
-    public function getFilters()
+    public function getFilters():array
     {
         return [
             new TwigFilter('base64_encode', [$this, 'base64Encode'], ['is_safe' => ['html']])
         ];
     }
     
-    public function base64Encode(string $path)
+    public function base64Encode(string $path, bool $public = false):?string
     {
+        if (true === $public) {
+            $filePath = $this->projectPath . DIRECTORY_SEPARATOR . "public" .DIRECTORY_SEPARATOR . $path;
+            if (file_exists($filePath)) {
+                return $this->normalizer->normalize(new File($filePath));
+            }
+            
+            throw new \Exception(sprintf("cannot find file '%s'", $filePath));
+        }
+        
         $filePath = $this->projectPath . $path;
         if (file_exists($filePath)) {
             
