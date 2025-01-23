@@ -15,23 +15,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class ImageEncodeExtension extends AbstractExtension
 {
+    private ?string $projectPath;
     
-    /**
-     * 
-     * @var string
-     */
-    private $projectPath;
-    
-    /**
-     * 
-     * @var FileNormalizerInterface
-     */
-    private $normalizer;
-    
-    public function __construct(ParameterBagInterface $bag, FileNormalizerInterface $normalizer) 
+    public function __construct(ParameterBagInterface $bag, private FileNormalizerInterface $normalizer)
     {
         $this->projectPath = $bag->get('kernel.project_dir');
-        $this->normalizer = $normalizer;
     }
     
     public function getFilters():array

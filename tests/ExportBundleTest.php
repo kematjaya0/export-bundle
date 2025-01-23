@@ -1,6 +1,6 @@
 <?php
 
-namespace Kematjaya\ExportBundle\Test;
+namespace Kematjaya\ExportBundle\Tests;
 
 use Kematjaya\Export\Normalizer\FileNormalizerInterface;
 use Kematjaya\Export\Manager\ExportManager;
@@ -28,7 +28,7 @@ class ExportBundleTest extends WebTestCase
         $this->assertInstanceOf(FileNormalizerInterface::class, $container->get('kematjaya.file_normalizer'));
     }
     
-    public static function getKernelClass() 
+    public static function getKernelClass(): string
     {
         return AppKernelTest::class;
     }
