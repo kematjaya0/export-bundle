@@ -1,35 +1,43 @@
 <?php
 
-namespace Kematjaya\ExportBundle\Test;
+namespace Kematjaya\ExportBundle\Tests;
 
 use Kematjaya\Export\Normalizer\FileNormalizerInterface;
 use Kematjaya\Export\Manager\ExportManager;
 use Kematjaya\Export\Manager\ManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Kematjaya\Export\Processor\PDF\DOMPDFProcessor;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
-class ExportBundleTest extends WebTestCase
+class ExportBundleTest extends KernelTestCase
 {
     public function testInstanceBundle()
     {
-        $client = parent::createClient();
-        $container = $client->getContainer();
+        $container = static::getContainer();
         $this->assertTrue($container->has(ManagerInterface::class));
         $this->assertInstanceOf(ExportManager::class, $container->get(ManagerInterface::class));
     }
-    
+
     public function testFIleNormalizer()
     {
-        $client = parent::createClient();
-        $container = $client->getContainer();
+        $container = static::getContainer();
         $this->assertTrue($container->has('kematjaya.file_normalizer'));
         $this->assertInstanceOf(FileNormalizerInterface::class, $container->get('kematjaya.file_normalizer'));
     }
-    
-    public static function getKernelClass() 
+
+    public function testRenderPdfWithEmbeddedImage()
     {
-        return AppKernelTest::class;
+        $container = static::getContainer();
+        $html = $container->get('twig')->render('public.html.twig');
+        $response = $container->get(ManagerInterface::class)->render(sprintf('<img src="%s">', trim($html)), new DOMPDFProcessor('doc.pdf'));
+
+        $this->assertStringStartsWith('%PDF', $response->getContent());
+    }
+
+    protected static function getKernelClass(): string
+    {
+        return AppKernel::class;
     }
 }

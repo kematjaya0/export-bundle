@@ -1,0 +1,10 @@
+framework:
+    test: true
+    secret: test
+    http_method_override: false
+    handle_all_throwables: true
+    php_errors:
+        log: true
+
+twig:
+    default_path: '%kernel.project_dir%/../templates'

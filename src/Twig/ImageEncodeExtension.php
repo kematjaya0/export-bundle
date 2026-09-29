@@ -43,17 +43,13 @@ class ImageEncodeExtension extends AbstractExtension
     
     public function base64Encode(string $path, bool $public = false):?string
     {
+        $relativePath = ltrim($path, '/\\');
         if (true === $public) {
-            $filePath = $this->projectPath . DIRECTORY_SEPARATOR . "public" .DIRECTORY_SEPARATOR . $path;
-            if (file_exists($filePath)) {
-                return $this->normalizer->normalize(new File($filePath));
-            }
-            
-            throw new \Exception(sprintf("cannot find file '%s'", $filePath));
+            $relativePath = "public" . DIRECTORY_SEPARATOR . $relativePath;
         }
         
-        $filePath = $this->projectPath . $path;
-        if (file_exists($filePath)) {
+        $filePath = $this->projectPath . DIRECTORY_SEPARATOR . $relativePath;
+        if (is_file($filePath)) {
             
             return $this->normalizer->normalize(new File($filePath));
         }
