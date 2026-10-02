@@ -2,9 +2,9 @@
 
 namespace Kematjaya\ExportBundle\Tests;
 
-use Kematjaya\Export\Normalizer\FileNormalizerInterface;
 use Kematjaya\Export\Manager\ExportManager;
 use Kematjaya\Export\Manager\ManagerInterface;
+use Kematjaya\Export\Normalizer\FileNormalizerInterface;
 use Kematjaya\Export\Processor\PDF\DOMPDFProcessor;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -13,21 +13,21 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class ExportBundleTest extends KernelTestCase
 {
-    public function testInstanceBundle()
+    public function testInstanceBundle(): void
     {
         $container = static::getContainer();
         $this->assertTrue($container->has(ManagerInterface::class));
         $this->assertInstanceOf(ExportManager::class, $container->get(ManagerInterface::class));
     }
 
-    public function testFIleNormalizer()
+    public function testFIleNormalizer(): void
     {
         $container = static::getContainer();
         $this->assertTrue($container->has('kematjaya.file_normalizer'));
         $this->assertInstanceOf(FileNormalizerInterface::class, $container->get('kematjaya.file_normalizer'));
     }
 
-    public function testRenderPdfWithEmbeddedImage()
+    public function testRenderPdfWithEmbeddedImage(): void
     {
         $container = static::getContainer();
         $html = $container->get('twig')->render('public.html.twig');

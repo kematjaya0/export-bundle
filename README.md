@@ -52,5 +52,5 @@ public function pdfDocument(ManagerInterface $exportManager)
 
 ## Test
 ```
-LOCAL_PACKAGES="export" sh docker/test.sh all
+LOCAL_PACKAGES="export" sh ../test.sh export-bundle all
 ```

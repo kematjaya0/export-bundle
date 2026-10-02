@@ -5,8 +5,8 @@ namespace Kematjaya\ExportBundle\Tests;
 use Kematjaya\ExportBundle\ExportBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>

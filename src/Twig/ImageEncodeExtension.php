@@ -2,11 +2,11 @@
 
 namespace Kematjaya\ExportBundle\Twig;
 
+use Kematjaya\Export\Normalizer\FileNormalizerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Kematjaya\Export\Normalizer\FileNormalizerInterface;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * @package Kematjaya\ExportBundle\Twig
@@ -15,45 +15,33 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class ImageEncodeExtension extends AbstractExtension
 {
-    
-    /**
-     * 
-     * @var string
-     */
-    private $projectPath;
-    
-    /**
-     * 
-     * @var FileNormalizerInterface
-     */
-    private $normalizer;
-    
-    public function __construct(ParameterBagInterface $bag, FileNormalizerInterface $normalizer) 
+    private readonly string $projectPath;
+
+    public function __construct(ParameterBagInterface $bag, private readonly FileNormalizerInterface $normalizer)
     {
         $this->projectPath = $bag->get('kernel.project_dir');
-        $this->normalizer = $normalizer;
     }
-    
-    public function getFilters():array
+
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('base64_encode', [$this, 'base64Encode'], ['is_safe' => ['html']])
+            new TwigFilter('base64_encode', $this->base64Encode(...), ['is_safe' => ['html']]),
         ];
     }
-    
-    public function base64Encode(string $path, bool $public = false):?string
+
+    public function base64Encode(string $path, bool $public = false): ?string
     {
         $relativePath = ltrim($path, '/\\');
         if (true === $public) {
             $relativePath = "public" . DIRECTORY_SEPARATOR . $relativePath;
         }
-        
+
         $filePath = $this->projectPath . DIRECTORY_SEPARATOR . $relativePath;
         if (is_file($filePath)) {
-            
+
             return $this->normalizer->normalize(new File($filePath));
         }
-        
+
         throw new \Exception(sprintf("cannot find file '%s'", $filePath));
     }
 }
